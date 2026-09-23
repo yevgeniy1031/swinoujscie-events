@@ -1,1 +1,0 @@
-# swinoujscie-events

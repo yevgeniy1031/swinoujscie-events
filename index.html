@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Świnoujście / Swinemünde — Co się dzieje / Was ist los</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #142c42;
+    --navy-2: #1c3a56;
+    --sea: #3e7691;
+    --sand: #ede3cb;
+    --paper: #faf7f0;
+    --paper-2: #f1ecdf;
+    --rust: #c1512f;
+    --ink: #1c2630;
+    --ink-soft: #52606d;
+    --line: rgba(20,44,66,0.14);
+    --bg: var(--paper);
+    --bg-panel: #ffffff;
+    --text: var(--ink);
+    --text-soft: var(--ink-soft);
+    --header-bg: var(--navy);
+    --header-text: var(--sand);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *, *::before, *::after { box-sizing: inherit; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10181f;
+      --bg-panel: #16212b;
+      --text: #ece6d8;
+      --text-soft: #a9b3ba;
+      --line: rgba(237,227,203,0.14);
+      --paper-2: #1b2731;
+      --header-bg: #0c1620;
+      --header-text: #ede3cb;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10181f;
+    --bg-panel: #16212b;
+    --text: #ece6d8;
+    --text-soft: #a9b3ba;
+    --line: rgba(237,227,203,0.14);
+    --paper-2: #1b2731;
+    --header-bg: #0c1620;
+    --header-text: #ede3cb;
+  }
+
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- Header ---------- */
+  header.site {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: env(safe-area-inset-top, 0px) 0 0 0;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .mark {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+  }
+  .mark .divider { opacity: 0.45; font-weight: 400; }
+  .mark .de { opacity: 0.75; font-style: italic; font-weight: 400; }
+
+  .lang-toggle {
+    display: inline-flex;
+    border: 1px solid rgba(237,227,203,0.35);
+    border-radius: 999px;
+    overflow: hidden;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .lang-toggle button {
+    border: none;
+    background: transparent;
+    color: var(--header-text);
+    padding: 7px 16px;
+    cursor: pointer;
+    opacity: 0.55;
+  }
+  .lang-toggle button.active {
+    background: var(--sand);
+    color: var(--navy);
+    opacity: 1;
+  }
+  .lang-toggle button:focus-visible { outline: 2px solid var(--sand); outline-offset: -2px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding-bottom: 46px;
+    position: relative;
+  }
+  .hero-inner { padding-top: 22px; }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5.4vw, 3.1rem);
+    line-height: 1.06;
+    margin: 0 0 14px 0;
+    max-width: 14ch;
+  }
+  .hero p.sub {
+    color: rgba(237,227,203,0.78);
+    font-size: 1.02rem;
+    max-width: 46ch;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .stub {
+    margin-top: 26px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--sand);
+    color: var(--navy);
+    padding: 10px 18px;
+    border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    position: relative;
+  }
+  .stub::before, .stub::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: var(--header-bg);
+    border-radius: 50%;
+  }
+  .stub::before { left: -6px; }
+  .stub::after { right: -6px; }
+  .stub .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rust); flex: none; }
+
+  /* jagged ticket edge between hero and content */
+  .tear {
+    display: block;
+    width: 100%;
+    height: 14px;
+    background: var(--header-bg);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 14 L5 2 L10 14 L15 2 L20 14 L25 2 L30 14 L35 2 L40 14 Z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 14 L5 2 L10 14 L15 2 L20 14 L25 2 L30 14 L35 2 L40 14 Z'/%3E%3C/svg%3E");
+    -webkit-mask-size: 40px 14px;
+    mask-size: 40px 14px;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+  }
+
+  /* ---------- Filters ---------- */
+  .filters {
+    padding: 22px 0 6px 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--bg-panel);
+    color: var(--text-soft);
+    cursor: pointer;
+  }
+  .chip.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--sand);
+  }
+  :root[data-theme="dark"] .chip.active,
+  @media (prefers-color-scheme: dark) { }
+
+  /* ---------- Board ---------- */
+  .board { padding: 18px 0 70px 0; }
+  .day-group { margin-bottom: 34px; }
+  .day-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--sea);
+    letter-spacing: 0.02em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 4px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 58px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 4px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .row:last-child { border-bottom: none; }
+  .date-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    text-align: center;
+    line-height: 1.05;
+  }
+  .date-badge .num {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--rust);
+  }
+  .date-badge .mon {
+    display: block;
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    text-transform: lowercase;
+    margin-top: 2px;
+  }
+  .row-main .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.08rem;
+    line-height: 1.25;
+    margin: 0 0 4px 0;
+  }
+  .row-main .meta {
+    font-size: 0.86rem;
+    color: var(--text-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+  .row-main .meta .sep { opacity: 0.5; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background: var(--paper-2);
+    color: var(--sea);
+    white-space: nowrap;
+    justify-self: end;
+    border: 1px solid var(--line);
+  }
+
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 48px 1fr; }
+    .tag { grid-column: 1 / -1; justify-self: start; margin-top: 2px; }
+  }
+
+  .empty {
+    padding: 40px 4px;
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 28px 0 calc(28px + env(safe-area-inset-bottom, 0px)) 0;
+    color: var(--text-soft);
+    font-size: 0.84rem;
+    line-height: 1.6;
+  }
+  footer .foot-mark {
+    font-family: 'Fraunces', serif;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--sand);
+    color: var(--navy);
+    padding: 8px 14px;
+    z-index: 10;
+  }
+  .skip-link:focus { left: 20px; }
+
+  ::selection { background: var(--rust); color: var(--sand); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#board">Skip to events</a>
+
+<header class="site">
+  <div class="wrap header-inner">
+    <div class="mark">
+      <span data-i18n="cityPL">Świnoujście</span>
+      <span class="divider">⟷</span>
+      <span class="de" data-i18n="cityDE">Swinemünde</span>
+    </div>
+    <div class="lang-toggle" role="group" aria-label="Language / Sprache">
+      <button type="button" id="btn-pl" class="active" aria-pressed="true">PL</button>
+      <button type="button" id="btn-de" aria-pressed="false">DE</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <h1 data-i18n="heroTitle">Co się dzieje w Świnoujściu</h1>
+    <p class="sub" data-i18n="heroSub">Targi, koncerty, festyny i wydarzenia rodzinne — po obu stronach granicy, zebrane w jednym miejscu.</p>
+    <div class="stub">
+      <span class="dot"></span>
+      <span data-i18n="stubLabel">POKŁAD / AN BORD</span>
+      <span id="stub-count">— events</span>
+    </div>
+  </div>
+  <span class="tear" aria-hidden="true"></span>
+</section>
+
+<main class="wrap">
+  <div class="filters" id="filters" role="group" aria-label="Filter events"></div>
+
+  <div class="board" id="board"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-mark">Świnoujście ⟷ Swinemünde</div>
+    <p data-i18n="footNote">Prototyp strony z wydarzeniami — dane przykładowe. Docelowo aktualizowane co tydzień na podstawie kalendarza urzędu miasta, ośrodka kultury i wydarzeń na Facebooku.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- i18n ----------
+  var STR = {
+    pl: {
+      cityPL: "Świnoujście", cityDE: "Swinemünde",
+      heroTitle: "Co się dzieje w Świnoujściu",
+      heroSub: "Targi, koncerty, festyny i wydarzenia rodzinne — po obu stronach granicy, zebrane w jednym miejscu.",
+      stubLabel: "POKŁAD",
+      footNote: "Prototyp strony z wydarzeniami — dane przykładowe. Docelowo aktualizowane co tydzień na podstawie kalendarza urzędu miasta, ośrodka kultury i wydarzeń na Facebooku.",
+      all: "Wszystkie",
+      empty: "Brak wydarzeń w tej kategorii w najbliższym czasie.",
+      eventsWord: "wydarzeń",
+      months: ["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"],
+      days: ["Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota"]
+    },
+    de: {
+      cityPL: "Świnoujście", cityDE: "Swinemünde",
+      heroTitle: "Was ist los in Swinemünde",
+      heroSub: "Märkte, Konzerte, Feste und Familienevents — von beiden Seiten der Grenze, an einem Ort.",
+      stubLabel: "AN BORD",
+      footNote: "Prototyp der Veranstaltungsseite — Beispieldaten. Künftig wöchentlich aktualisiert anhand des städtischen Kalenders, des Kulturzentrums und Facebook-Events.",
+      all: "Alle",
+      empty: "Keine Veranstaltungen in dieser Kategorie in nächster Zeit.",
+      eventsWord: "Veranstaltungen",
+      months: ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"],
+      days: ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"]
+    }
+  };
+
+  var CATS = {
+    market:  { pl: "Targi",    de: "Markt" },
+    music:   { pl: "Muzyka",   de: "Musik" },
+    festival:{ pl: "Festiwal", de: "Festival" },
+    family:  { pl: "Rodzinne", de: "Familie" },
+    outdoor: { pl: "Plener",   de: "Draußen" }
+  };
+
+  // ---------- sample data (placeholder — replace with real events) ----------
+  // date: ISO string, cat: key from CATS
+  var EVENTS = [
+    { date: "2026-09-26", cat: "market",   pl: { name: "Jarmark Rybny", venue: "Plac Rybaka" },      de: { name: "Fischmarkt", venue: "Fischerplatz" } },
+    { date: "2026-09-27", cat: "music",    pl: { name: "Koncert na Molo", venue: "Molo Zachodnie" }, de: { name: "Konzert am Seesteg", venue: "Westmole" } },
+    { date: "2026-09-27", cat: "family",   pl: { name: "Rodzinne Podchody nad Świną", venue: "Park Zdrojowy" }, de: { name: "Familien-Schnitzeljagd", venue: "Kurpark" } },
+    { date: "2026-10-03", cat: "festival", pl: { name: "Festiwal Latarni Morskich", venue: "Latarnia Morska" }, de: { name: "Leuchtturm-Festival", venue: "Leuchtturm" } },
+    { date: "2026-10-04", cat: "outdoor",  pl: { name: "Spacer promenadą do Ahlbeck", venue: "Promenada, start: Deptak" }, de: { name: "Promenadenwanderung nach Ahlbeck", venue: "Strandpromenade, Start: Deptak" } },
+    { date: "2026-10-10", cat: "market",   pl: { name: "Kiermasz Jesienny", venue: "Plac Wolności" },  de: { name: "Herbstmarkt", venue: "Platz der Freiheit" } },
+    { date: "2026-10-11", cat: "music",    pl: { name: "Wieczór Szanty", venue: "Klub Żeglarski" },    de: { name: "Shanty-Abend", venue: "Segelclub" } },
+    { date: "2026-10-17", cat: "family",   pl: { name: "Dzień Latawca", venue: "Plaża Wschodnia" },    de: { name: "Drachenfesttag", venue: "Oststrand" } }
+  ];
+
+  var lang = "pl";
+  var activeCat = "all";
+
+  var elFilters = document.getElementById("filters");
+  var elBoard = document.getElementById("board");
+  var elStubCount = document.getElementById("stub-count");
+
+  function fmtDate(iso, s) {
+    var d = new Date(iso + "T00:00:00");
+    return { num: d.getDate(), mon: s.months[d.getMonth()], dayName: s.days[d.getDay()], full: d };
+  }
+
+  function render() {
+    var s = STR[lang];
+
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      if (s[key]) el.textContent = s[key];
+    });
+    document.getElementById("btn-pl").classList.toggle("active", lang === "pl");
+    document.getElementById("btn-pl").setAttribute("aria-pressed", lang === "pl");
+    document.getElementById("btn-de").classList.toggle("active", lang === "de");
+    document.getElementById("btn-de").setAttribute("aria-pressed", lang === "de");
+
+    // filters
+    elFilters.innerHTML = "";
+    var allChip = makeChip("all", s.all);
+    elFilters.appendChild(allChip);
+    Object.keys(CATS).forEach(function (key) {
+      elFilters.appendChild(makeChip(key, CATS[key][lang]));
+    });
+
+    // board
+    var filtered = EVENTS.filter(function (e) { return activeCat === "all" || e.cat === activeCat; })
+                          .sort(function (a, b) { return a.date.localeCompare(b.date); });
+
+    elStubCount.textContent = filtered.length + " " + s.eventsWord;
+
+    elBoard.innerHTML = "";
+    if (filtered.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = s.empty;
+      elBoard.appendChild(empty);
+      return;
+    }
+
+    var groups = {};
+    var order = [];
+    filtered.forEach(function (e) {
+      if (!groups[e.date]) { groups[e.date] = []; order.push(e.date); }
+      groups[e.date].push(e);
+    });
+
+    order.forEach(function (dateKey) {
+      var info = fmtDate(dateKey, s);
+      var group = document.createElement("div");
+      group.className = "day-group";
+
+      var label = document.createElement("div");
+      label.className = "day-label";
+      label.textContent = info.dayName + " " + info.num + " " + info.mon;
+      group.appendChild(label);
+
+      groups[dateKey].forEach(function (e) {
+        var row = document.createElement("div");
+        row.className = "row";
+
+        var badge = document.createElement("div");
+        badge.className = "date-badge";
+        badge.innerHTML = '<span class="num">' + info.num + '</span><span class="mon">' + info.mon + '</span>';
+
+        var main = document.createElement("div");
+        main.className = "row-main";
+        var name = document.createElement("p");
+        name.className = "name";
+        name.textContent = e[lang].name;
+        var meta = document.createElement("div");
+        meta.className = "meta";
+        meta.innerHTML = "<span>" + e[lang].venue + "</span>";
+        main.appendChild(name);
+        main.appendChild(meta);
+
+        var tag = document.createElement("div");
+        tag.className = "tag";
+        tag.textContent = CATS[e.cat][lang];
+
+        row.appendChild(badge);
+        row.appendChild(main);
+        row.appendChild(tag);
+        group.appendChild(row);
+      });
+
+      elBoard.appendChild(group);
+    });
+  }
+
+  function makeChip(key, label) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip" + (activeCat === key ? " active" : "");
+    b.textContent = label;
+    b.addEventListener("click", function () {
+      activeCat = key;
+      render();
+    });
+    return b;
+  }
+
+  document.getElementById("btn-pl").addEventListener("click", function () { lang = "pl"; render(); });
+  document.getElementById("btn-de").addEventListener("click", function () { lang = "de"; render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>
