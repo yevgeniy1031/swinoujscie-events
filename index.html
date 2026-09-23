@@ -84,6 +84,17 @@
   }
   .mark {
     display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mark .lighthouse { display: none; }
+  .mark-emoji {
+    flex: none;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .mark .names {
+    display: flex;
     align-items: baseline;
     gap: 10px;
     font-family: 'Fraunces', serif;
@@ -265,6 +276,11 @@
     gap: 4px 10px;
   }
   .row-main .meta .sep { opacity: 0.5; }
+  .row-main .meta .time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    color: var(--sea);
+  }
   .tag {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.7rem;
@@ -291,12 +307,20 @@
 
   /* ---------- Footer ---------- */
   footer {
-    border-top: 1px solid var(--line);
-    padding: 28px 0 calc(28px + env(safe-area-inset-bottom, 0px)) 0;
+    border-top: none;
+    padding: 0 0 calc(28px + env(safe-area-inset-bottom, 0px)) 0;
     color: var(--text-soft);
     font-size: 0.84rem;
     line-height: 1.6;
   }
+  .wave-divider {
+    display: block;
+    width: 100%;
+    height: 20px;
+    color: var(--sea);
+    opacity: 0.35;
+  }
+  footer .foot-inner { padding-top: 22px; }
   footer .foot-mark {
     font-family: 'Fraunces', serif;
     color: var(--text);
@@ -324,9 +348,12 @@
 <header class="site">
   <div class="wrap header-inner">
     <div class="mark">
-      <span data-i18n="cityPL">Świnoujście</span>
-      <span class="divider">⟷</span>
-      <span class="de" data-i18n="cityDE">Swinemünde</span>
+      <span class="mark-emoji" aria-hidden="true">⚓</span>
+      <span class="names">
+        <span data-i18n="cityPL">Świnoujście</span>
+        <span class="divider">⟷</span>
+        <span class="de" data-i18n="cityDE">Swinemünde</span>
+      </span>
     </div>
     <div class="lang-toggle" role="group" aria-label="Language / Sprache / Język">
       <button type="button" id="btn-pl" class="active" aria-pressed="true">PL</button>
@@ -356,7 +383,10 @@
 </main>
 
 <footer>
-  <div class="wrap">
+  <svg class="wave-divider" viewBox="0 0 400 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0 10 Q 25 2, 50 10 T 100 10 T 150 10 T 200 10 T 250 10 T 300 10 T 350 10 T 400 10" stroke="currentColor" stroke-width="1.4" fill="none"/>
+  </svg>
+  <div class="wrap foot-inner">
     <div class="foot-mark">Świnoujście ⟷ Swinemünde</div>
     <p data-i18n="footNote">Prototyp strony z wydarzeniami — dane przykładowe. Docelowo aktualizowane co tydzień na podstawie kalendarza urzędu miasta, ośrodka kultury i wydarzeń na Facebooku.</p>
   </div>
@@ -407,27 +437,45 @@
   };
 
   var CATS = {
-    market:  { pl: "Targi",    de: "Markt",     en: "Market" },
-    music:   { pl: "Muzyka",   de: "Musik",     en: "Music" },
-    festival:{ pl: "Festiwal", de: "Festival",  en: "Festival" },
-    family:  { pl: "Rodzinne", de: "Familie",   en: "Family" },
-    outdoor: { pl: "Plener",   de: "Draußen",   en: "Outdoors" },
-    sport:   { pl: "Sport",    de: "Sport",     en: "Sport" }
+    market:    { pl: "Targi",     de: "Markt",       en: "Market" },
+    music:     { pl: "Muzyka",    de: "Musik",       en: "Music" },
+    festival:  { pl: "Festiwal",  de: "Festival",    en: "Festival" },
+    family:    { pl: "Rodzinne",  de: "Familie",     en: "Family" },
+    outdoor:   { pl: "Plener",    de: "Draußen",     en: "Outdoors" },
+    sport:     { pl: "Sport",     de: "Sport",       en: "Sport" },
+    exhibition:{ pl: "Wystawa",   de: "Ausstellung", en: "Exhibition" },
+    workshop:  { pl: "Warsztaty", de: "Workshop",    en: "Workshop" }
   };
 
   // ---------- sample data (placeholder — replace with real events) ----------
   // date: ISO string, cat: key from CATS
   var EVENTS = [
-    { date: "2026-09-26", cat: "sport",  pl: { name: "Świnoujście parkrun (co sobotę, bezpłatny bieg 5 km)", venue: "Start: Park Zdrojowy" }, de: { name: "Świnoujście parkrun (jeden Samstag, kostenloser 5-km-Lauf)", venue: "Start: Kurpark" }, en: { name: "Świnoujście parkrun (every Saturday, free 5K)", venue: "Start: Park Zdrojowy" } },
-    { date: "2026-09-24", cat: "music",  pl: { name: "Martin Tingvall – Jazz nad Morzem", venue: "Hotel Esplanade, Heringsdorf" }, de: { name: "Martin Tingvall – Jazz am Meer", venue: "Hotel Esplanade, Seebad Heringsdorf" }, en: { name: "Martin Tingvall – Jazz by the Sea", venue: "Hotel Esplanade, Heringsdorf" } },
-    { date: "2026-09-24", cat: "music",  pl: { name: "Lemon Squeezy – Koncert na Plaży", venue: "Namiot Koncertowy, Ahlbeck" }, de: { name: "Lemon Squeezy – Strandkonzert", venue: "Konzertzelt, Seebad Ahlbeck" }, en: { name: "Lemon Squeezy – Beach Concert", venue: "Concert Tent, Ahlbeck" } },
-    { date: "2026-09-25", cat: "music",  pl: { name: "Tribute to ABBA", venue: "Dom Kultury (MDK), Świnoujście" }, de: { name: "Tribute to ABBA", venue: "Dom Kultury, Swinemünde" }, en: { name: "Tribute to ABBA", venue: "Dom Kultury (MDK), Świnoujście" } },
+    { date: "2026-09-23", time: "17:00", cat: "exhibition", pl: { name: "Środa w Muzeum: „Świnoujska giełda” — wystawa fotografii Nikoli Suchackiej", venue: "Muzeum Rybołówstwa Morskiego" }, de: { name: "Museumsmittwoch: „Świnoujska Börse” — Fotoausstellung von Nikola Suchacka", venue: "Museum für Seefischerei" }, en: { name: "Wednesday at the Museum: \"Świnoujście Market\" — photo exhibition by Nikola Suchacka", venue: "Museum of Sea Fishery" } },
+    { date: "2026-09-23", time: "18:00", cat: "sport",  pl: { name: "BiegamBoLubię (cotygodniowy bieg, środy)", venue: "Stadion Miejski" }, de: { name: "BiegamBoLubię (wöchentlicher Lauftreff, mittwochs)", venue: "Stadion Miejski" }, en: { name: "BiegamBoLubię running club (weekly, Wednesdays)", venue: "Stadion Miejski" } },
+    { date: "2026-09-24", time: "16:00", cat: "sport",  pl: { name: "Świnoujskie Czwartki Lekkoatletyczne (cotygodniowo)", venue: "Stadion Miejski" }, de: { name: "Swinemünder Leichtathletik-Donnerstage (wöchentlich)", venue: "Stadion Miejski" }, en: { name: "Świnoujście Athletics Thursdays (weekly)", venue: "Stadion Miejski" } },
+    { date: "2026-09-24", time: "18:00", cat: "workshop", pl: { name: "Światowy Dzień Morza: „Morze możliwości” — warsztaty kreatywne", venue: "Miejska Biblioteka Publiczna" }, de: { name: "Welttag der Schifffahrt: „Meer der Möglichkeiten” — Kreativwerkstatt", venue: "Stadtbibliothek" }, en: { name: "World Maritime Day: \"A Sea of Possibilities\" creative workshop", venue: "City Public Library" } },
+    { date: "2026-09-24", time: "19:30", cat: "music",  pl: { name: "Martin Tingvall – Jazz nad Morzem", venue: "Hotel Esplanade, Heringsdorf" }, de: { name: "Martin Tingvall – Jazz am Meer", venue: "Hotel Esplanade, Seebad Heringsdorf" }, en: { name: "Martin Tingvall – Jazz by the Sea", venue: "Hotel Esplanade, Heringsdorf" } },
+    { date: "2026-09-24", time: "14:00", cat: "music",  pl: { name: "Lemon Squeezy – Koncert na Plaży", venue: "Namiot Koncertowy, Ahlbeck" }, de: { name: "Lemon Squeezy – Strandkonzert", venue: "Konzertzelt, Seebad Ahlbeck" }, en: { name: "Lemon Squeezy – Beach Concert", venue: "Concert Tent, Ahlbeck" } },
+    { date: "2026-09-25", time: "19:30", cat: "music",  pl: { name: "Tribute to ABBA", venue: "Dom Kultury (MDK), Świnoujście" }, de: { name: "Tribute to ABBA", venue: "Dom Kultury, Swinemünde" }, en: { name: "Tribute to ABBA", venue: "Dom Kultury (MDK), Świnoujście" } },
+    { date: "2026-09-26", time: "09:00", cat: "sport",  pl: { name: "Świnoujście parkrun (co sobotę, bezpłatny bieg 5 km)", venue: "Start: Park Zdrojowy" }, de: { name: "Świnoujście parkrun (jeden Samstag, kostenloser 5-km-Lauf)", venue: "Start: Kurpark" }, en: { name: "Świnoujście parkrun (every Saturday, free 5K)", venue: "Start: Park Zdrojowy" } },
+    { date: "2026-09-26", time: "19:00", cat: "music",  pl: { name: "Miejska Potańcówka", venue: "Muszla Koncertowa przy Promenadzie" }, de: { name: "Städtischer Tanzabend", venue: "Konzertmuschel an der Promenade" }, en: { name: "City Dance Night", venue: "Concert Shell by the Promenade" } },
+    { date: "2026-09-27", time: "09:00", cat: "market", pl: { name: "Pchli Targ", venue: "Zielony Rynek „Pod Zegarem”" }, de: { name: "Flohmarkt", venue: "Grüner Markt „Pod Zegarem”" }, en: { name: "Flea Market", venue: "Green Market „Pod Zegarem”" } },
+    { date: "2026-09-27", time: "12:00", cat: "family", pl: { name: "Piknik Osiedla Zachodniego", venue: "Świat Zabaw, Sportu i Rekreacji, ul. Grunwaldzka" }, de: { name: "Picknick des Westviertels", venue: "Świat Zabaw, Sportu i Rekreacji, Grunwaldzka-Straße" }, en: { name: "Western District Picnic", venue: "Świat Zabaw, Sportu i Rekreacji, Grunwaldzka St." } },
+    { date: "2026-10-10", time: "17:00", cat: "festival", pl: { name: "Bal Seniora", venue: "Hotel Interferie" }, de: { name: "Seniorenball", venue: "Hotel Interferie" }, en: { name: "Seniors' Ball", venue: "Hotel Interferie" } },
     { date: "2026-10-17", cat: "sport",  pl: { name: "MB Boxing Night 29 – Next Step", venue: "Międzyzdroje" }, de: { name: "MB Boxing Night 29 – Next Step", venue: "Międzyzdroje" }, en: { name: "MB Boxing Night 29 – Next Step", venue: "Międzyzdroje" } },
-    { date: "2026-11-27", cat: "market", pl: { name: "Jarmark Bożonarodzeniowy w Ahlbeck", venue: "Promenada przy Molo, Ahlbeck" }, de: { name: "Ahlbecker Weihnachtsmarkt", venue: "Strandpromenade an der Seebrücke, Ahlbeck" }, en: { name: "Ahlbeck Christmas Market", venue: "Pier Promenade, Ahlbeck" } }
+    { date: "2026-11-01", cat: "festival", pl: { name: "Blask Świateł i Morski Ogień – Jesienne Wydarzenie w Kurortach Cesarskich", venue: "Ahlbeck, Heringsdorf, Bansin" }, de: { name: "Lichterglanz & Meeresfeuer – Herbst-Event Kaiserbäder", venue: "Ahlbeck, Heringsdorf, Bansin" }, en: { name: "Lights & Sea Fire – Autumn Event in the Imperial Spa Towns", venue: "Ahlbeck, Heringsdorf, Bansin" } },
+    { date: "2026-11-25", time: "19:30", cat: "workshop", pl: { name: "Wykład: „Wyspa bez granic” — podróż przez historię wyspy", venue: "Haus des Gastes, Bansin" }, de: { name: "Vortrag: „Die grenzenlose Zweiländer Insel” — Bildreise durch die Inselgeschichte", venue: "Haus des Gastes, Bansin" }, en: { name: "Illustrated talk: \"The Borderless Two-Nation Island\"", venue: "Haus des Gastes, Bansin" } },
+    { date: "2026-11-27", cat: "market", pl: { name: "Jarmark Bożonarodzeniowy w Ahlbeck", venue: "Promenada przy Molo, Ahlbeck" }, de: { name: "Ahlbecker Weihnachtsmarkt", venue: "Strandpromenade an der Seebrücke, Ahlbeck" }, en: { name: "Ahlbeck Christmas Market", venue: "Pier Promenade, Ahlbeck" } },
+    { date: "2026-12-11", cat: "market", pl: { name: "Jarmark Bożonarodzeniowy w Bansin", venue: "Promenada, Bansin" }, de: { name: "Bansiner Weihnachtsmarkt", venue: "Strandpromenade, Bansin" }, en: { name: "Bansin Christmas Market", venue: "Beach Promenade, Bansin" } }
   ];
-  // NOTE: parkrun repeats every Saturday — this entry shows only the nearest date.
-  // A real recurring-events feature (auto-generating each week) is a good next upgrade
-  // once you're past the manual-entry prototype stage.
+  // Events without a "time" field either run all day or span variable hours (e.g. a
+  // multi-day market) — the UI simply omits the time for those rather than guessing.
+  // NOTE: BiegamBoLubię and the Athletics Thursdays repeat weekly — entries below show only
+  // the nearest occurrence. A real recurring-events feature (auto-generating each week) is a
+  // good next upgrade once past the manual-entry prototype stage.
+  // Source: www.swinoujscie.pl/wydarzenia (official city calendar) + mdk.swinoujscie.pl +
+  // festivalsindeutschland.de + regioactive.de (Usedom lecture series) + eBilet.
+  // Verified via web search, checked 2026-09-23. Covers Sept 23 – Dec 13, 2026.
   // NOTE: this is a short, verified starting list gathered via web search (Usedomer
   // Musikfestival, eBilet, festivalsindeutschland.de). Most day-to-day local events —
   // city council happenings, MOK Świnoujście workshops, weekly markets — live on
@@ -471,7 +519,13 @@
 
     // board
     var filtered = EVENTS.filter(function (e) { return activeCat === "all" || e.cat === activeCat; })
-                          .sort(function (a, b) { return a.date.localeCompare(b.date); });
+                          .sort(function (a, b) {
+                            var d = a.date.localeCompare(b.date);
+                            if (d !== 0) return d;
+                            var at = a.time || "99:99";
+                            var bt = b.time || "99:99";
+                            return at.localeCompare(bt);
+                          });
 
     elStubCount.textContent = filtered.length + " " + s.eventsWord;
 
@@ -516,7 +570,12 @@
         name.textContent = e[lang].name;
         var meta = document.createElement("div");
         meta.className = "meta";
-        meta.innerHTML = "<span>" + e[lang].venue + "</span>";
+        var metaHtml = "";
+        if (e.time) {
+          metaHtml += "<span class=\"time\">" + e.time + "</span><span class=\"sep\">·</span>";
+        }
+        metaHtml += "<span>" + e[lang].venue + "</span>";
+        meta.innerHTML = metaHtml;
         main.appendChild(name);
         main.appendChild(meta);
 
