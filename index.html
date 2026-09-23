@@ -328,9 +328,10 @@
       <span class="divider">⟷</span>
       <span class="de" data-i18n="cityDE">Swinemünde</span>
     </div>
-    <div class="lang-toggle" role="group" aria-label="Language / Sprache">
+    <div class="lang-toggle" role="group" aria-label="Language / Sprache / Język">
       <button type="button" id="btn-pl" class="active" aria-pressed="true">PL</button>
       <button type="button" id="btn-de" aria-pressed="false">DE</button>
+      <button type="button" id="btn-en" aria-pressed="false">EN</button>
     </div>
   </div>
 </header>
@@ -390,29 +391,48 @@
       eventsWord: "Veranstaltungen",
       months: ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"],
       days: ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"]
+    },
+    en: {
+      cityPL: "Świnoujście", cityDE: "Swinemünde",
+      heroTitle: "What's on in Świnoujście",
+      heroSub: "Markets, concerts, festivals and family events — from both sides of the border, in one place.",
+      stubLabel: "ON BOARD",
+      footNote: "Prototype events page — sample listings so far. Updated weekly going forward from the city calendar, the cultural centre and local Facebook events.",
+      all: "All",
+      empty: "No events in this category coming up.",
+      eventsWord: "events",
+      months: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+      days: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     }
   };
 
   var CATS = {
-    market:  { pl: "Targi",    de: "Markt" },
-    music:   { pl: "Muzyka",   de: "Musik" },
-    festival:{ pl: "Festiwal", de: "Festival" },
-    family:  { pl: "Rodzinne", de: "Familie" },
-    outdoor: { pl: "Plener",   de: "Draußen" }
+    market:  { pl: "Targi",    de: "Markt",     en: "Market" },
+    music:   { pl: "Muzyka",   de: "Musik",     en: "Music" },
+    festival:{ pl: "Festiwal", de: "Festival",  en: "Festival" },
+    family:  { pl: "Rodzinne", de: "Familie",   en: "Family" },
+    outdoor: { pl: "Plener",   de: "Draußen",   en: "Outdoors" },
+    sport:   { pl: "Sport",    de: "Sport",     en: "Sport" }
   };
 
   // ---------- sample data (placeholder — replace with real events) ----------
   // date: ISO string, cat: key from CATS
   var EVENTS = [
-    { date: "2026-09-26", cat: "market",   pl: { name: "Jarmark Rybny", venue: "Plac Rybaka" },      de: { name: "Fischmarkt", venue: "Fischerplatz" } },
-    { date: "2026-09-27", cat: "music",    pl: { name: "Koncert na Molo", venue: "Molo Zachodnie" }, de: { name: "Konzert am Seesteg", venue: "Westmole" } },
-    { date: "2026-09-27", cat: "family",   pl: { name: "Rodzinne Podchody nad Świną", venue: "Park Zdrojowy" }, de: { name: "Familien-Schnitzeljagd", venue: "Kurpark" } },
-    { date: "2026-10-03", cat: "festival", pl: { name: "Festiwal Latarni Morskich", venue: "Latarnia Morska" }, de: { name: "Leuchtturm-Festival", venue: "Leuchtturm" } },
-    { date: "2026-10-04", cat: "outdoor",  pl: { name: "Spacer promenadą do Ahlbeck", venue: "Promenada, start: Deptak" }, de: { name: "Promenadenwanderung nach Ahlbeck", venue: "Strandpromenade, Start: Deptak" } },
-    { date: "2026-10-10", cat: "market",   pl: { name: "Kiermasz Jesienny", venue: "Plac Wolności" },  de: { name: "Herbstmarkt", venue: "Platz der Freiheit" } },
-    { date: "2026-10-11", cat: "music",    pl: { name: "Wieczór Szanty", venue: "Klub Żeglarski" },    de: { name: "Shanty-Abend", venue: "Segelclub" } },
-    { date: "2026-10-17", cat: "family",   pl: { name: "Dzień Latawca", venue: "Plaża Wschodnia" },    de: { name: "Drachenfesttag", venue: "Oststrand" } }
+    { date: "2026-09-26", cat: "sport",  pl: { name: "Świnoujście parkrun (co sobotę, bezpłatny bieg 5 km)", venue: "Start: Park Zdrojowy" }, de: { name: "Świnoujście parkrun (jeden Samstag, kostenloser 5-km-Lauf)", venue: "Start: Kurpark" }, en: { name: "Świnoujście parkrun (every Saturday, free 5K)", venue: "Start: Park Zdrojowy" } },
+    { date: "2026-09-24", cat: "music",  pl: { name: "Martin Tingvall – Jazz nad Morzem", venue: "Hotel Esplanade, Heringsdorf" }, de: { name: "Martin Tingvall – Jazz am Meer", venue: "Hotel Esplanade, Seebad Heringsdorf" }, en: { name: "Martin Tingvall – Jazz by the Sea", venue: "Hotel Esplanade, Heringsdorf" } },
+    { date: "2026-09-24", cat: "music",  pl: { name: "Lemon Squeezy – Koncert na Plaży", venue: "Namiot Koncertowy, Ahlbeck" }, de: { name: "Lemon Squeezy – Strandkonzert", venue: "Konzertzelt, Seebad Ahlbeck" }, en: { name: "Lemon Squeezy – Beach Concert", venue: "Concert Tent, Ahlbeck" } },
+    { date: "2026-09-25", cat: "music",  pl: { name: "Tribute to ABBA", venue: "Dom Kultury (MDK), Świnoujście" }, de: { name: "Tribute to ABBA", venue: "Dom Kultury, Swinemünde" }, en: { name: "Tribute to ABBA", venue: "Dom Kultury (MDK), Świnoujście" } },
+    { date: "2026-10-17", cat: "sport",  pl: { name: "MB Boxing Night 29 – Next Step", venue: "Międzyzdroje" }, de: { name: "MB Boxing Night 29 – Next Step", venue: "Międzyzdroje" }, en: { name: "MB Boxing Night 29 – Next Step", venue: "Międzyzdroje" } },
+    { date: "2026-11-27", cat: "market", pl: { name: "Jarmark Bożonarodzeniowy w Ahlbeck", venue: "Promenada przy Molo, Ahlbeck" }, de: { name: "Ahlbecker Weihnachtsmarkt", venue: "Strandpromenade an der Seebrücke, Ahlbeck" }, en: { name: "Ahlbeck Christmas Market", venue: "Pier Promenade, Ahlbeck" } }
   ];
+  // NOTE: parkrun repeats every Saturday — this entry shows only the nearest date.
+  // A real recurring-events feature (auto-generating each week) is a good next upgrade
+  // once you're past the manual-entry prototype stage.
+  // NOTE: this is a short, verified starting list gathered via web search (Usedomer
+  // Musikfestival, eBilet, festivalsindeutschland.de). Most day-to-day local events —
+  // city council happenings, MOK Świnoujście workshops, weekly markets — live on
+  // Facebook and the city's own calendar, which aren't well indexed by search.
+  // Add those manually as you collect them, following the same {date, cat, pl, de} shape.
 
   var lang = "pl";
   var activeCat = "all";
@@ -438,6 +458,8 @@
     document.getElementById("btn-pl").setAttribute("aria-pressed", lang === "pl");
     document.getElementById("btn-de").classList.toggle("active", lang === "de");
     document.getElementById("btn-de").setAttribute("aria-pressed", lang === "de");
+    document.getElementById("btn-en").classList.toggle("active", lang === "en");
+    document.getElementById("btn-en").setAttribute("aria-pressed", lang === "en");
 
     // filters
     elFilters.innerHTML = "";
@@ -526,6 +548,7 @@
 
   document.getElementById("btn-pl").addEventListener("click", function () { lang = "pl"; render(); });
   document.getElementById("btn-de").addEventListener("click", function () { lang = "de"; render(); });
+  document.getElementById("btn-en").addEventListener("click", function () { lang = "en"; render(); });
 
   render();
 })();
