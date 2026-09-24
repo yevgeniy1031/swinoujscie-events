@@ -1,0 +1,5 @@
+# Local-only tooling: scrapers must never be published in this public repo
+# (it's served directly by Cloudflare).
+scripts/
+.env
+.venv/
