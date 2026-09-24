@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Świnoujście / Swinemünde — Co się dzieje / Was ist los</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%93%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -217,8 +218,6 @@
     border-color: var(--navy);
     color: var(--sand);
   }
-  :root[data-theme="dark"] .chip.active,
-  @media (prefers-color-scheme: dark) { }
 
   /* ---------- Board ---------- */
   .board { padding: 18px 0 70px 0; }
@@ -388,7 +387,7 @@
   </svg>
   <div class="wrap foot-inner">
     <div class="foot-mark">Świnoujście ⟷ Swinemünde</div>
-    <p data-i18n="footNote">Prototyp strony z wydarzeniami — dane przykładowe. Docelowo aktualizowane co tydzień na podstawie kalendarza urzędu miasta, ośrodka kultury i wydarzeń na Facebooku.</p>
+    <p data-i18n="footNote">Wydarzenia zbierane z oficjalnego kalendarza miasta, Miejskiego Domu Kultury i lokalnych źródeł po obu stronach granicy. Aktualizowane co tydzień.</p>
   </div>
 </footer>
 
@@ -403,7 +402,7 @@
       heroTitle: "Co się dzieje w Świnoujściu",
       heroSub: "Targi, koncerty, festyny i wydarzenia rodzinne — po obu stronach granicy, zebrane w jednym miejscu.",
       stubLabel: "POKŁAD",
-      footNote: "Prototyp strony z wydarzeniami — dane przykładowe. Docelowo aktualizowane co tydzień na podstawie kalendarza urzędu miasta, ośrodka kultury i wydarzeń na Facebooku.",
+      footNote: "Wydarzenia zbierane z oficjalnego kalendarza miasta, Miejskiego Domu Kultury i lokalnych źródeł po obu stronach granicy. Aktualizowane co tydzień.",
       all: "Wszystkie",
       empty: "Brak wydarzeń w tej kategorii w najbliższym czasie.",
       eventsWord: "wydarzeń",
@@ -415,7 +414,7 @@
       heroTitle: "Was ist los in Swinemünde",
       heroSub: "Märkte, Konzerte, Feste und Familienevents — von beiden Seiten der Grenze, an einem Ort.",
       stubLabel: "AN BORD",
-      footNote: "Prototyp der Veranstaltungsseite — Beispieldaten. Künftig wöchentlich aktualisiert anhand des städtischen Kalenders, des Kulturzentrums und Facebook-Events.",
+      footNote: "Veranstaltungen werden aus dem offiziellen Stadtkalender, dem Kulturhaus (MDK) und lokalen Quellen auf beiden Seiten der Grenze zusammengestellt. Wöchentlich aktualisiert.",
       all: "Alle",
       empty: "Keine Veranstaltungen in dieser Kategorie in nächster Zeit.",
       eventsWord: "Veranstaltungen",
@@ -427,7 +426,7 @@
       heroTitle: "What's on in Świnoujście",
       heroSub: "Markets, concerts, festivals and family events — from both sides of the border, in one place.",
       stubLabel: "ON BOARD",
-      footNote: "Prototype events page — sample listings so far. Updated weekly going forward from the city calendar, the cultural centre and local Facebook events.",
+      footNote: "Events are compiled from the official city calendar, the Miejski Dom Kultury and local sources on both sides of the border. Updated weekly.",
       all: "All",
       empty: "No events in this category coming up.",
       eventsWord: "events",
@@ -518,7 +517,9 @@
     });
 
     // board
-    var filtered = EVENTS.filter(function (e) { return activeCat === "all" || e.cat === activeCat; })
+    var now = new Date();
+    var todayIso = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0") + "-" + String(now.getDate()).padStart(2, "0");
+    var filtered = EVENTS.filter(function (e) { return e.date >= todayIso && (activeCat === "all" || e.cat === activeCat); })
                           .sort(function (a, b) {
                             var d = a.date.localeCompare(b.date);
                             if (d !== 0) return d;
@@ -570,12 +571,19 @@
         name.textContent = e[lang].name;
         var meta = document.createElement("div");
         meta.className = "meta";
-        var metaHtml = "";
         if (e.time) {
-          metaHtml += "<span class=\"time\">" + e.time + "</span><span class=\"sep\">·</span>";
+          var timeSpan = document.createElement("span");
+          timeSpan.className = "time";
+          timeSpan.textContent = e.time;
+          var sepSpan = document.createElement("span");
+          sepSpan.className = "sep";
+          sepSpan.textContent = "\u00b7";
+          meta.appendChild(timeSpan);
+          meta.appendChild(sepSpan);
         }
-        metaHtml += "<span>" + e[lang].venue + "</span>";
-        meta.innerHTML = metaHtml;
+        var venueSpan = document.createElement("span");
+        venueSpan.textContent = e[lang].venue;
+        meta.appendChild(venueSpan);
         main.appendChild(name);
         main.appendChild(meta);
 
